@@ -1,16 +1,16 @@
-// ---s ĐỂ CẢ TEAM TỰ ĐỘNG CẬP NHẬT: bỏ dấu // ở 2 dòng dưới rồi thay bằng link raw của bạn ---
 // ==UserScript==
 // @name         Cendo → Raccoonie | Tạo & tải mockup clicker tại chỗ
 // @namespace    raccoonie.tools
-// @version      5.0.0
+// @version      5.1.0
 // @description  Vẽ mockup clicker bằng canvas ngay trên trang đơn Cendo và ĐÍNH thẳng vào ô Mockup/Design (không cần tải + upload lại). Có xem trước & tải PNG dự phòng.
 // @author       Raccoonie
 // @match        *://cendo.work/*
 // @match        *://*.cendo.work/*
 // @grant        none
 // @run-at       document-idle
-// @updateURL    https://github.com/ngochieu2003/Gen-mockup-design/raw/refs/heads/main/cendo-to-raccoonie.user.js
-//@downloadURL  https://github.com/ngochieu2003/Gen-mockup-design/raw/refs/heads/main/cendo-to-raccoonie.user.js
+// --- ĐỂ CẢ TEAM TỰ ĐỘNG CẬP NHẬT: bỏ dấu // ở 2 dòng dưới rồi thay bằng link raw của bạn ---
+// @updateURL    https://raw.githubusercontent.com/TAI-KHOAN/REPO/main/cendo-to-raccoonie.user.js
+// @downloadURL  https://raw.githubusercontent.com/TAI-KHOAN/REPO/main/cendo-to-raccoonie.user.js
 // ==/UserScript==
 
 /*
@@ -25,11 +25,11 @@
   │     rồi điền selector vào CONFIG.noteSelectors.                       │
   │  4. Bấm nút → mở bảng xem trước, sửa tay được. Shift+bấm → tải PNG.   │
   │                                                                       │
-  │  ICON trong External note: gõ dấu * kèm mã 3 ký tự, mỗi mã = 1 phím.  │
+  │  ICON trong External note: viết *MÃ* (dấu sao HAI ĐẦU), mỗi mã=1 phím. │
   │  Icon dùng ĐÚNG path SVG của shop (viewBox 2551), màu theo màu chữ:   │
-  │     *HRT = heart   *STR = star   *FLW = flower                        │
-  │     *DOG = dog_feet   *LCK = lucky_leaf (cỏ 4 lá)                     │
-  │     VD: "GOAL*HRT" → G O A L ♥ (5 phím). Thêm mã ở ICON_CODES/ICONS.  │
+  │     *HRT* = heart   *STR* = star   *FLW* = flower                     │
+  │     *DOG* = dog_feet   *LCK* = lucky_leaf (cỏ 4 lá)                   │
+  │     VD: "*HRT*Hieu*STR*" → ♥ H i e u ★ (6 phím). Kiểu cũ *HRT vẫn hiểu.│
   └──────────────────────────────────────────────────────────────────────┘
 */
 
@@ -443,30 +443,44 @@
   }
 
   // ── 3c. Tách chữ thành các phím (mỗi ký tự / mỗi icon = 1 phím) ──
-  // Nhận diện icon: dấu * theo sau bởi mã 3 ký tự (HRT, STR, FLW, DOG, LCK).
+  // Icon viết dạng *MÃ* (sao hai đầu), vd *HRT*. Vẫn hiểu kiểu cũ *MÃ (không sao đóng).
   function parseToken(tok) {
-    const m = tok.match(/^\*\s*([A-Za-z]{3})$/);
-    if (m && ICON_CODES[m[1].toUpperCase()]) return { icon: ICON_CODES[m[1].toUpperCase()], code: '*' + m[1].toUpperCase() };
+    // *HRT* hoặc *HRT
+    const m = tok.match(/^\*([A-Za-z]{3})(\*?)$/);
+    if (m && ICON_CODES[m[1].toUpperCase()]) {
+      const code = m[1].toUpperCase();
+      return { icon: ICON_CODES[code], code: '*' + code + (m[2] ? '*' : '') };
+    }
     return tok;
   }
 
   function splitKeys(content) {
     const s = (content || '').trim();
     if (!s) return [];
-    // Có dấu phân cách rõ ràng: "G | O | A | L | *HRT"
+    // Có dấu phân cách rõ ràng: "G | O | A | L | *HRT*"
     if (/[|/,]/.test(s)) {
       return s.split(/[|/,]+/).map(x => x.trim()).filter(Boolean).map(parseToken);
     }
-    // Quét từng ký tự; gặp *CODE thì gộp thành 1 icon; bỏ khoảng trắng.
+    // Quét từng ký tự; gặp *MÃ* (hoặc *MÃ kiểu cũ) thì gộp thành 1 icon; bỏ khoảng trắng.
     const out = [];
     let i = 0;
     while (i < s.length) {
       const ch = s[i];
       if (/\s/.test(ch)) { i++; continue; }
       if (ch === '*') {
-        const m = s.slice(i).match(/^\*([A-Za-z]{3})/);
+        // kiểu mới: *MÃ* (có sao đóng)
+        let m = s.slice(i).match(/^\*([A-Za-z]{3})\*/);
         if (m && ICON_CODES[m[1].toUpperCase()]) {
-          out.push({ icon: ICON_CODES[m[1].toUpperCase()], code: '*' + m[1].toUpperCase() });
+          const code = m[1].toUpperCase();
+          out.push({ icon: ICON_CODES[code], code: '*' + code + '*' });
+          i += 5; // '*' + 3 ký tự + '*'
+          continue;
+        }
+        // kiểu cũ: *MÃ (không sao đóng)
+        m = s.slice(i).match(/^\*([A-Za-z]{3})/);
+        if (m && ICON_CODES[m[1].toUpperCase()]) {
+          const code = m[1].toUpperCase();
+          out.push({ icon: ICON_CODES[code], code: '*' + code });
           i += 4; // '*' + 3 ký tự
           continue;
         }
