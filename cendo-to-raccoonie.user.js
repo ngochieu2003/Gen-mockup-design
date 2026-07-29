@@ -1,3 +1,4 @@
+// --- ĐỂ CẢ TEAM TỰ ĐỘNG CẬP NHẬT: bỏ dấu // ở 2 dòng dưới rồi thay bằng link raw của bạn ---
 // ==UserScript==
 // @name         Cendo → Raccoonie | Tạo & tải mockup clicker tại chỗ
 // @namespace    raccoonie.tools
@@ -8,7 +9,6 @@
 // @match        *://*.cendo.work/*
 // @grant        none
 // @run-at       document-idle
-// --- ĐỂ CẢ TEAM TỰ ĐỘNG CẬP NHẬT: bỏ dấu // ở 2 dòng dưới rồi thay bằng link raw của bạn ---
 // @updateURL    https://raw.githubusercontent.com/TAI-KHOAN/REPO/main/cendo-to-raccoonie.user.js
 // @downloadURL  https://raw.githubusercontent.com/TAI-KHOAN/REPO/main/cendo-to-raccoonie.user.js
 // ==/UserScript==
