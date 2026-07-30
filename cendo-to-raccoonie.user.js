@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cendo → Raccoonie | Tạo & tải mockup clicker tại chỗ
 // @namespace    raccoonie.tools
-// @version      5.2.0
+// @version      5.3.0
 // @description  Vẽ mockup clicker bằng canvas ngay trên trang đơn Cendo và ĐÍNH thẳng vào ô Mockup/Design (không cần tải + upload lại). Có xem trước & tải PNG dự phòng.
 // @author       Raccoonie
 // @match        *://cendo.work/*
@@ -98,7 +98,7 @@
     noteLabels: [/external\s*note/i, /ghi\s*ch[úu]\s*(ngo[àa]i|kh[áa]ch|đơn)/i, /note\s*kh[áa]ch/i],
 
     // Số phím tối đa cho phép trên 1 khay.
-    maxKeys: 8,
+    maxKeys: 15,
 
     // ── ĐÍNH ẢNH VÀO WEB ─────────────────────────────────────────────
     // Nhãn của 2 ô upload trong phần Media. Script tìm input file gần các nhãn này.
