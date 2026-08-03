@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cendo → Raccoonie | Tạo & tải mockup clicker tại chỗ
 // @namespace    raccoonie.tools
-// @version      5.3.0
+// @version      5.4.0
 // @description  Vẽ mockup clicker bằng canvas ngay trên trang đơn Cendo và ĐÍNH thẳng vào ô Mockup/Design (không cần tải + upload lại). Có xem trước & tải PNG dự phòng.
 // @author       Raccoonie
 // @match        *://cendo.work/*
@@ -65,7 +65,7 @@
     combos: [
       { id: 'do-hong',    trayNames: ['đỏ'],                keyNames: ['hồng'],
         tray: '#C23B3B', face: '#F3C2CB', text: '#8A2E3A' },
-      { id: 'reu-kem',    trayNames: ['xanh rêu', 'rêu'],    keyNames: ['trắng', 'kem'],
+      { id: 'reu-kem',    trayNames: ['xanh matcha', 'xanh rêu', 'rêu'], keyNames: ['trắng', 'kem'],
         tray: '#5E6E45', face: '#F7F5EE', text: '#4A5A36' },
       { id: 'kem-do',     trayNames: ['kem', 'trắng'],       keyNames: ['đỏ'],
         tray: '#ECDFC7', face: '#A31F1F', text: '#FDF6EE' },
